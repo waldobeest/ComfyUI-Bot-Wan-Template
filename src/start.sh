@@ -144,7 +144,7 @@ sync_bot_repo() {
 
 if [ -f "$FLAG_FILE" ]; then
   echo "FLAG FILE FOUND"
-  # sync
+  # sync 2
   sync_bot_repo
 
   echo "▶️  Starting ComfyUI"
