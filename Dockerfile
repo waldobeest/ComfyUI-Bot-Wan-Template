@@ -80,6 +80,13 @@ RUN for repo in \
 COPY sageattention-2.1.1-cp312-cp312-linux_x86_64.whl /tmp/
 RUN pip install /tmp/sageattention-2.1.1-cp312-cp312-linux_x86_64.whl
 
+RUN pip install --no-cache-dir \
+    -r /ComfyUI/custom_nodes/custom_nodes/ComfyUI-KJNodes/requirements.txt \
+    -r /ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt \
+    -r /ComfyUI/custom_nodes/custom_nodes/ComfyUI-Impact-Pack/requirements.txt
+
+RUN pip install scikit-image
+
 RUN pip install --no-cache-dir discord.py==2.5.2 \
                               python-dotenv==1.1.0 \
                               Requests==2.32.3 \

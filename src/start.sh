@@ -147,9 +147,6 @@ if [ -f "$FLAG_FILE" ]; then
 
   sync_bot_repo
 
-  pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-KJNodes/requirements.txt
-  pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt
-  pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-Impact-Pack/requirements.txt
   echo "▶️  Starting ComfyUI"
   # group both the main and fallback commands so they share the same log
   mkdir -p "$NETWORK_VOLUME/${RUNPOD_POD_ID}"
