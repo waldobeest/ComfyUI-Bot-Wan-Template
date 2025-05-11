@@ -7,6 +7,7 @@ export LD_PRELOAD="${TCMALLOC}"
 set -eo pipefail
 set +u
 
+if [[ -z "$is_multi_gpu" || "$is_multi_gpu" != "false" ]]; then
 if [[ "${IS_DEV,,}" =~ ^(true|1|t|yes)$ ]]; then
     API_URL="https://comfyui-job-api-dev.fly.dev"  # Replace with your development API URL
     echo "Using development API endpoint"
@@ -384,3 +385,5 @@ report_status true "Pod fully initialized and ready for processing"
 echo "Initialization complete! Pod is ready to process jobs."
 # Wait for both processes
 wait $COMFY_PID $WORKER_PID
+fi
+wait
