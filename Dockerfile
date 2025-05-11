@@ -93,6 +93,8 @@ RUN pip install --no-cache-dir discord.py==2.5.2 \
                               "httpx[http2]"
 
 # Entrypoint
+COPY models /models
+ENV MODEL_DIR=/models
 COPY src/start_script.sh /start_script.sh
 RUN chmod +x /start_script.sh
 EXPOSE 8888
