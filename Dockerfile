@@ -60,6 +60,8 @@ RUN git clone https://github.com/Hearmeman24/upscalers.git /tmp/upscalers \
 # Clone and install all your custom nodes
 RUN for repo in \
     https://github.com/kijai/ComfyUI-KJNodes.git \
+    https://github.com/Comfy-Org/ComfyUI-Manager.git \
+    https://github.com/nonnonstop/comfyui-faster-loading.git \
     https://github.com/rgthree/rgthree-comfy.git \
     https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git \
     https://github.com/ltdrdata/ComfyUI-Impact-Pack.git \
