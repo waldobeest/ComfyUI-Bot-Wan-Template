@@ -53,6 +53,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 RUN pip install opencv-python
 
+RUN git clone https://github.com/Hearmeman24/upscalers.git
+
 # Clone and install all your custom nodes
 RUN for repo in \
     https://github.com/kijai/ComfyUI-KJNodes.git \
@@ -95,7 +97,7 @@ RUN pip install --no-cache-dir discord.py==2.5.2 \
 
 # Entrypoint
 COPY src/start_script.sh /start_script.sh
-COPY 4xLSDIR.pth /
+COPY /upscalers/4xLSDIR.pth /
 RUN chmod +x /start_script.sh
 EXPOSE 8888
 CMD ["/start_script.sh"]
