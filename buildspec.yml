@@ -1,0 +1,13 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - export DOCKER_BUILDKIT=1                 # turn on BuildKit
+      - echo $DOCKERHUB_PAT | docker login -u $DOCKERHUB_USER --password-stdin
+  build:
+    commands:
+      - docker build --progress=plain \
+          -t docker.io/$DOCKERHUB_USER/comfyui-bot:v4 .
+  post_build:
+    commands:
+      - docker push docker.io/$DOCKERHUB_USER/comfyui-bot:v4
