@@ -78,7 +78,7 @@ RUN for repo in \
     fi; \
   done
 
-# SageAttention wheel
+
 COPY sageattention-2.1.1-cp312-cp312-linux_x86_64.whl /tmp/
 RUN pip install /tmp/sageattention-2.1.1-cp312-cp312-linux_x86_64.whl
 
