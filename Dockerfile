@@ -53,7 +53,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 RUN pip install opencv-python
 
-RUN git clone https://github.com/Hearmeman24/upscalers.git
+RUN git clone https://github.com/Hearmeman24/upscalers.git /tmp/upscalers \
+    && cp /tmp/upscalers/4xLSDIR.pth /4xLSDIR.pth \
+    && rm -rf /tmp/upscalers
 
 # Clone and install all your custom nodes
 RUN for repo in \
@@ -79,8 +81,8 @@ RUN for repo in \
   done
 
 
-COPY sageattention-2.1.1-cp312-cp312-linux_x86_64.whl /tmp/
-RUN pip install /tmp/sageattention-2.1.1-cp312-cp312-linux_x86_64.whl
+RUN pip install --no-cache-dir \
+    https://raw.githubusercontent.com/Hearmeman24/upscalers/master/sageattention-2.1.1-cp312-cp312-linux_x86_64.whl
 
 RUN pip install --no-cache-dir \
     -r /ComfyUI/custom_nodes/custom_nodes/ComfyUI-KJNodes/requirements.txt \
@@ -97,7 +99,6 @@ RUN pip install --no-cache-dir discord.py==2.5.2 \
 
 # Entrypoint
 COPY src/start_script.sh /start_script.sh
-COPY upscalers/4xLSDIR.pth /
 RUN chmod +x /start_script.sh
 EXPOSE 8888
 CMD ["/start_script.sh"]
