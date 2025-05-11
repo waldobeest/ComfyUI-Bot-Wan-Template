@@ -144,7 +144,10 @@ sync_bot_repo() {
 
 if [ -f "$FLAG_FILE" ]; then
   echo "FLAG FILE FOUND"
-  # sync 2
+  pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-KJNodes/requirements.txt
+  pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt
+  pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-Impact-Pack/requirements.txt
+  pip install scikit-image
   sync_bot_repo
 
   echo "▶️  Starting ComfyUI"
