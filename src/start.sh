@@ -102,8 +102,8 @@ if [ -f "$FLAG_FILE" ]; then
   pip install boto3
   pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-KJNodes/requirements.txt
   pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt
-  mv /4xLSDIR.pth $NETWORK_VOLUME/ComfyUI/models/upscale_models
-  rm -rf $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-Manager
+  mv "/4xLSDIR.pth" "$NETWORK_VOLUME/ComfyUI/models/upscale_models" || echo "Move operation failed, continuing..."
+  rm -rf "$NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-Manager" || echo "Remove operation failed, continuing..."
   sync_bot_repo
 
   echo "▶️  Starting ComfyUI"
