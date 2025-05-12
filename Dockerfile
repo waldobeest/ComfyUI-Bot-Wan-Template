@@ -89,7 +89,6 @@ RUN for repo in \
     https://github.com/nonnonstop/comfyui-faster-loading.git \
     https://github.com/rgthree/rgthree-comfy.git \
     https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git \
-    https://github.com/ltdrdata/ComfyUI-Impact-Pack.git \
     https://github.com/cubiq/ComfyUI_essentials.git \
     https://github.com/kijai/ComfyUI-WanVideoWrapper.git \
     https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git \
