@@ -51,6 +51,31 @@ RUN cd /ComfyUI && \
 FROM base AS final
 ENV PATH="/opt/venv/bin:$PATH"
 
+# Create required model directories
+RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/clip_vision
+
+# Download diffusion models
+RUN wget -P /models/diffusion_models \
+    https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_480p_14B_bf16.safetensors \
+    https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_t2v_14B_bf16.safetensors \
+    https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_vace_1.3B_preview_fp16.safetensors \
+    https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_t2v_1.3B_bf16.safetensors
+
+# Download text encoders
+RUN wget -P /models/text_encoders \
+    https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-bf16.safetensors \
+    https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/open-clip-xlm-roberta-large-vit-huge-14_visual_fp16.safetensors \
+    https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
+
+# Download VAE models
+RUN wget -P /models/vae \
+    https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1_VAE_bf16.safetensors \
+    https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors
+
+# Download clip vision model
+RUN wget -P /models/clip_vision \
+    https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors
+
 RUN pip install opencv-python
 
 RUN git clone https://github.com/Hearmeman24/upscalers.git /tmp/upscalers \
@@ -93,8 +118,6 @@ RUN pip install --no-cache-dir discord.py==2.5.2 \
                               "httpx[http2]"
 
 # Entrypoint
-COPY models /models
-ENV MODEL_DIR=/models
 COPY src/start_script.sh /start_script.sh
 RUN chmod +x /start_script.sh
 EXPOSE 8888

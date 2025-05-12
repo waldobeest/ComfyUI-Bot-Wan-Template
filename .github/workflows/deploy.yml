@@ -1,0 +1,35 @@
+name: Build and Push to ECR via EC2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-on-ec2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Build on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+
+            cd ~/your-project-dir || git clone https://github.com/${{ github.repository }} ~/your-project-dir && cd ~/your-project-dir
+
+            git pull
+
+            # Log into ECR
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+              | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO }}
+
+            # Build and push
+            docker build -t ${{ secrets.ECR_REPO }} .
+            docker push ${{ secrets.ECR_REPO }}
+          EOF
