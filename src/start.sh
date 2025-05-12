@@ -7,6 +7,7 @@ export LD_PRELOAD="${TCMALLOC}"
 set -eo pipefail
 set +u
 
+
 if [[ -z "$is_multi_gpu" || "$is_multi_gpu" != "false" ]]; then
 if [[ "${IS_DEV,,}" =~ ^(true|1|t|yes)$ ]]; then
     API_URL="https://comfyui-job-api-dev.fly.dev"  # Replace with your development API URL
@@ -48,6 +49,7 @@ else
     NETWORK_VOLUME="/"
 fi
 
+
 echo "Using NETWORK_VOLUME: $NETWORK_VOLUME"
 FLAG_FILE="$NETWORK_VOLUME/.comfyui_initialized"
 COMFYUI_DIR="$NETWORK_VOLUME/ComfyUI"
@@ -59,6 +61,13 @@ if [ "${IS_DEV:-false}" = "true" ]; then
     BRANCH="master"
 fi
 
+if [ "$new_config" = "true" ]; then
+    echo "new_config is true, proceeding with new configuration..."
+    touch FLAG_FILE
+else
+    echo "new_config is not true or not set, using default configuration..."
+    # Your commands for when new_config is not true or not set
+fi
 
 
 sync_bot_repo() {
