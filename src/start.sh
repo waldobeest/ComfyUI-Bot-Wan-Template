@@ -61,14 +61,6 @@ if [ "${IS_DEV:-false}" = "true" ]; then
     BRANCH="master"
 fi
 
-if [ "$new_config" = "true" ]; then
-    echo "new_config is true, proceeding with new configuration..."
-    touch FLAG_FILE
-else
-    echo "new_config is not true or not set, using default configuration..."
-    # Your commands for when new_config is not true or not set
-fi
-
 
 sync_bot_repo() {
   echo "Syncing bot repo (branch: $BRANCH)..."
@@ -106,7 +98,7 @@ sync_bot_repo() {
   fi
 }
 
-if [ -f "$FLAG_FILE" ]; then
+if [ -f "$FLAG_FILE" ] || [ "$new_config" = "true" ]; then
   echo "FLAG FILE FOUND"
   pip install boto3
   pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-KJNodes/requirements.txt
