@@ -36,8 +36,10 @@ jobs:
               | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO }}
 
             # Build and push
-            docker build -t ${{ secrets.ECR_REPO }}/comfyui-wan .
-            docker push ${{ secrets.ECR_REPO }}/comfyui-wan
+            docker build -t ${{ secrets.ECR_REPO }}/wan-bot-with-models . > build.log 2>&1
+            docker push ${{ secrets.ECR_REPO }}/wan-bot-with-models >> build.log 2>&1
+            echo "🚀 Docker build and push completed. Last 50 lines:"
+            tail -n 50 build.log
           EOF
 
       - name: 🚨 Notify Discord of successful deploy
@@ -54,7 +56,7 @@ jobs:
                 "description": "Branch **'${{ github.ref_name }}'** was built and deployed.",
                 "color": 3066993,
                 "fields": [
-                  { "name": "Repository", "value": "`${{ secrets.ECR_REPO }}/comfyui-wan`", "inline": false },
+                  { "name": "Repository", "value": "`${{ secrets.ECR_REPO }}/wan-bot-with-models`", "inline": false },
                   { "name": "Run", "value": "[#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false }
                 ]
               }]
