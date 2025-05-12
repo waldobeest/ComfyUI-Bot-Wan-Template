@@ -16,52 +16,6 @@ else
     echo "Using production API endpoint"
 fi
 
-echo "== System Information =="
-
-# Python version check
-if command -v python3 &> /dev/null; then
-    python3 --version || echo "Failed to get Python version"
-else
-    echo "Python not found"
-fi
-
-# Pip version check
-if command -v pip &> /dev/null; then
-    pip --version || echo "Failed to get pip version"
-else
-    echo "pip not found"
-fi
-
-# PyTorch check
-python3 -c "
-try:
-    import torch
-    print(f'PyTorch version: {torch.__version__}')
-    print(f'CUDA available: {torch.cuda.is_available()}')
-except Exception as e:
-    print('Failed to get PyTorch information:', str(e))
-" || echo "Failed to run PyTorch check"
-
-# Python path check
-if command -v which &> /dev/null; then
-    which python || echo "Failed to get Python path"
-else
-    echo "which command not available"
-fi
-
-# SageAttention check
-python3 -c "
-try:
-    import sageattention
-    print('SageAttention imported successfully')
-except ImportError:
-    print('SageAttention not found')
-except Exception as e:
-    print('Error checking SageAttention:', str(e))
-" || echo "Failed to run SageAttention check"
-
-echo "== End System Information =="
-
 URL="http://127.0.0.1:8188"
 
 # Function to report pod status
@@ -145,6 +99,7 @@ sync_bot_repo() {
 
 if [ -f "$FLAG_FILE" ]; then
   echo "FLAG FILE FOUND"
+  pip install boto3
   pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-KJNodes/requirements.txt
   pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt
   pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-Impact-Pack/requirements.txt
