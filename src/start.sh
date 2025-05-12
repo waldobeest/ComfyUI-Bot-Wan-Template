@@ -7,6 +7,13 @@ export LD_PRELOAD="${TCMALLOC}"
 set -eo pipefail
 set +u
 
+echo "🔧 Installing KJNodes packages..."
+pip install -r /ComfyUI/custom_nodes/ComfyUI-KJNodes/requirements.txt &
+KJ_PID=$!
+
+echo "🔧 Installing WanVideoWrapper packages..."
+pip install -r /ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt &
+WAN_PID=$!
 
 if [[ -z "$is_multi_gpu" || "$is_multi_gpu" != "false" ]]; then
 if [[ "${IS_DEV,,}" =~ ^(true|1|t|yes)$ ]]; then
@@ -100,12 +107,29 @@ sync_bot_repo() {
 
 if [ -f "$FLAG_FILE" ] || [ "$new_config" = "true" ]; then
   echo "FLAG FILE FOUND"
-  pip install boto3
-  pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-KJNodes/requirements.txt
   pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt
   mv "/4xLSDIR.pth" "$NETWORK_VOLUME/ComfyUI/models/upscale_models" || echo "Move operation failed, continuing..."
   rm -rf "$NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-Manager" || echo "Remove operation failed, continuing..."
   sync_bot_repo
+
+  wait $KJ_PID
+  KJ_STATUS=$?
+
+  wait $WAN_PID
+  WAN_STATUS=$?
+  echo "✅ KJNodes install complete"
+  echo "✅ WanVideoWrapper install complete"
+
+  # Check results
+  if [ $KJ_STATUS -ne 0 ]; then
+    echo "❌ KJNodes install failed."
+    exit 1
+  fi
+
+  if [ $WAN_STATUS -ne 0 ]; then
+    echo "❌ WanVideoWrapper install failed."
+    exit 1
+  fi
 
   echo "▶️  Starting ComfyUI"
   # group both the main and fallback commands so they share the same log
@@ -129,6 +153,12 @@ if [ -f "$FLAG_FILE" ] || [ "$new_config" = "true" ]; then
 else
   echo "NO FLAG FILE FOUND – starting initial setup"
 fi
+
+wait $KJ_PID
+KJ_STATUS=$?
+
+wait $WAN_PID
+WAN_STATUS=$?
 
 sync_bot_repo
 # Set the target directory
