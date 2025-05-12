@@ -117,7 +117,7 @@ RUN pip install --no-cache-dir discord.py==2.5.2 \
                               websocket_client==1.8.0 \
                               "httpx[http2]"
 
-# Entrypoint
+# Entrypointt
 COPY src/start_script.sh /start_script.sh
 RUN chmod +x /start_script.sh
 EXPOSE 8888
