@@ -23,17 +23,21 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             set -e
 
-            cd ~/your-project-dir || git clone https://github.com/${{ github.repository }} ~/your-project-dir && cd ~/your-project-dir
+            # Go to or clone repo
+            cd ~/ComfyUI-Bot-Wan-Template || \
+              git clone https://github.com/Hearmeman24/ComfyUI-Bot-Wan-Template.git ~/ComfyUI-Bot-Wan-Template && \
+              cd ~/ComfyUI-Bot-Wan-Template
 
+            # Make sure we’re on the correct branch
             git fetch origin dev && git checkout dev && git pull origin dev
 
-            # Log into ECR
+            # Login to ECR
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
               | docker login --username AWS --password-stdin ${{ secrets.ECR_REPO }}
 
             # Build and push
-            docker build -t ${{ secrets.ECR_REPO }} .
-            docker push ${{ secrets.ECR_REPO }}
+            docker build -t ${{ secrets.ECR_REPO }}/comfyui-wan .
+            docker push ${{ secrets.ECR_REPO }}/comfyui-wan
           EOF
 
       - name: 🚨 Notify Discord of successful deploy
@@ -50,7 +54,7 @@ jobs:
                 "description": "Branch **'${{ github.ref_name }}'** was built and deployed.",
                 "color": 3066993,
                 "fields": [
-                  { "name": "Environment", "value": "'"${{ github.ref_name }}"'", "inline": true },
+                  { "name": "Repository", "value": "`${{ secrets.ECR_REPO }}/comfyui-wan`", "inline": false },
                   { "name": "Run", "value": "[#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false }
                 ]
               }]
