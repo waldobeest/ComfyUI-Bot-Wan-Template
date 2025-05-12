@@ -1,7 +1,9 @@
 name: Build and Push to ECR via EC2
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - dev
 
 jobs:
   build-on-ec2:
@@ -23,7 +25,7 @@ jobs:
 
             cd ~/your-project-dir || git clone https://github.com/${{ github.repository }} ~/your-project-dir && cd ~/your-project-dir
 
-            git pull
+            git fetch origin dev && git checkout dev && git pull origin dev
 
             # Log into ECR
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
@@ -33,3 +35,23 @@ jobs:
             docker build -t ${{ secrets.ECR_REPO }} .
             docker push ${{ secrets.ECR_REPO }}
           EOF
+
+      - name: 🚨 Notify Discord of successful deploy
+        if: ${{ success() }}
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "username": "Comfy Builder",
+              "embeds": [{
+                "title": "✅ ECR Deploy Succeeded",
+                "description": "Branch **'${{ github.ref_name }}'** was built and deployed.",
+                "color": 3066993,
+                "fields": [
+                  { "name": "Environment", "value": "'"${{ github.ref_name }}"'", "inline": true },
+                  { "name": "Run", "value": "[#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false }
+                ]
+              }]
+            }'
