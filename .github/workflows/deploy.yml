@@ -3,7 +3,7 @@ name: Build and Push to ECR via EC2
 on:
   push:
     branches:
-      - dev
+      - build
 
 jobs:
   build-on-ec2:
