@@ -7,6 +7,18 @@ export LD_PRELOAD="${TCMALLOC}"
 set -eo pipefail
 set +u
 
+FILM_PATH="/ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film/film_net_fp32.pt"
+
+if [ ! -f "$FILM_PATH" ]; then
+    echo "⬇️ Downloading film_net_fp32.pt in background..."
+    mkdir -p "$(dirname "$FILM_PATH")"
+    wget -q https://d1s3da0dcaf6kx.cloudfront.net/film_net_fp32.pt -O "$FILM_PATH" &
+    FILM_PID=$!
+else
+    echo "✅ film_net_fp32.pt already exists."
+    FILM_PID=""
+fi
+
 echo "🔧 Installing KJNodes packages..."
 pip install -r /ComfyUI/custom_nodes/ComfyUI-KJNodes/requirements.txt &
 KJ_PID=$!
@@ -129,6 +141,11 @@ if [ -f "$FLAG_FILE" ] || [ "$new_config" = "true" ]; then
   if [ $WAN_STATUS -ne 0 ]; then
     echo "❌ WanVideoWrapper install failed."
     exit 1
+  fi
+
+  if [ -n "$FILM_PID" ]; then
+    wait $FILM_PID
+    echo "✅ film_net_fp32.pt download complete."
   fi
 
   echo "▶️  Starting ComfyUI"
@@ -354,6 +371,10 @@ pip install --no-cache-dir -r $NETWORK_VOLUME/ComfyUI/custom_nodes/ComfyUI-Impac
 pip install scikit-image
 echo "Starting ComfyUI"
 touch "$FLAG_FILE"
+if [ -n "$FILM_PID" ]; then
+    wait $FILM_PID
+    echo "✅ film_net_fp32.pt download complete."
+fi
 mkdir -p "$NETWORK_VOLUME/${RUNPOD_POD_ID}"
 nohup bash -c "python3 \"$NETWORK_VOLUME\"/ComfyUI/main.py --listen 2>&1 | tee \"$NETWORK_VOLUME\"/comfyui_\"$RUNPOD_POD_ID\"_nohup.log" &
 COMFY_PID=$!
