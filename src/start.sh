@@ -110,7 +110,7 @@ if [ -f "$FLAG_FILE" ] || [ "$new_config" = "true" ]; then
   echo "▶️  Starting ComfyUI"
   # group both the main and fallback commands so they share the same log
   mkdir -p "$NETWORK_VOLUME/${RUNPOD_POD_ID}"
-  nohup bash -c "python3 \"$NETWORK_VOLUME\"/ComfyUI/main.py --listen --use-sage-attention --extra-model-paths-config '/extra_model_paths.yaml' 2>&1 | tee \"$NETWORK_VOLUME\"/comfyui_\"$RUNPOD_POD_ID\"_nohup.log" &
+  nohup bash -c "python3 \"$NETWORK_VOLUME\"/ComfyUI/main.py --listen --use-sage-attention --extra-model-paths-config '/ComfyUI-Bot-Wan-Template/extra_model_paths.yaml' 2>&1 | tee \"$NETWORK_VOLUME\"/comfyui_\"$RUNPOD_POD_ID\"_nohup.log" &
 
   until curl --silent --fail "$URL" --output /dev/null; do
       echo "🔄  Still waiting…"
