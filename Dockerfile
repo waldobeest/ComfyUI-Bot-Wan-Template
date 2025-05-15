@@ -26,10 +26,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN echo "torch==2.8.0.dev20250511+cu128" > /torch-constraint.txt && \
-    echo "torchaudio==2.6.0.dev20250511+cu128" >> /torch-constraint.txt && \
-    echo "torchsde==0.2.6" >> /torch-constraint.txt && \
-    echo "torchvision==0.22.0.dev20250511+cu128" >> /torch-constraint.txt
 
 # ------------------------------------------------------------
 # PyTorch (CUDA 12.8) & core tooling (no pip cache mounts)
@@ -88,6 +84,12 @@ RUN git clone https://github.com/Hearmeman24/upscalers.git /tmp/upscalers \
 
 COPY download_loras.sh /tmp/
 RUN chmod +x /tmp/download_loras.sh && /tmp/download_loras.sh
+
+
+RUN echo "torch==2.8.0.dev20250511+cu128" > /torch-constraint.txt && \
+    echo "torchaudio==2.6.0.dev20250511+cu128" >> /torch-constraint.txt && \
+    echo "torchsde==0.2.6" >> /torch-constraint.txt && \
+    echo "torchvision==0.22.0.dev20250511+cu128" >> /torch-constraint.txt
 
 # Clone and install all your custom nodes
 RUN for repo in \
