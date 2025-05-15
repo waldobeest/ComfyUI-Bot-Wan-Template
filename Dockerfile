@@ -86,10 +86,6 @@ RUN mkdir -p /models/loras
 COPY download_loras.sh /tmp/
 RUN chmod +x /tmp/download_loras.sh && /tmp/download_loras.sh
 
-RUN mkdir -p /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film && \
-    wget -O /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film/film_net_fp32.pt \
-        https://d1s3da0dcaf6kx.cloudfront.net/film_net_fp32.pt
-
 # Clone and install all your custom nodes
 RUN for repo in \
     https://github.com/kijai/ComfyUI-KJNodes.git \
@@ -114,6 +110,9 @@ RUN for repo in \
     fi; \
   done
 
+RUN mkdir -p /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film && \
+    wget -O /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film/film_net_fp32.pt \
+        https://d1s3da0dcaf6kx.cloudfront.net/film_net_fp32.pt \
 
 RUN pip install --no-cache-dir \
     https://raw.githubusercontent.com/Hearmeman24/upscalers/master/sageattention-2.1.1-cp312-cp312-linux_x86_64.whl
