@@ -58,39 +58,39 @@ RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/
 
 # Create LoRA directory and download LoRA files
 RUN mkdir -p /models/loras && \
-    FILES="\
-        wan-nsfw-e14-fixed.safetensors \
-        big_tits_epoch_50.safetensors \
-        pov_blowjob_v1.1.safetensors \
-        Wan_Breast_Helper_Hearmeman.safetensors \
-        wan_cowgirl_v1.3.safetensors \
-        cleavage_epoch_40.safetensors \
-        orgasm_e60.safetensors \
-        wan_missionary_side.safetensors \
-        dicks_epoch_100.safetensors \
-        masturbation_cumshot_wanI2V480p_v1.safetensors \
-        r0und4b0ut-wan-v1.0.safetensors \
-        facials_epoch_50.safetensors \
-        deepthroat_epoch_80.safetensors \
-        ahegao_v1_e35_wan.safetensors \
-        Wan_Pussy_LoRA_Hearmeman.safetensors \
-        doggyPOV_v1_1.safetensors \
-        wan_pov_missionary_v1.1.safetensors \
-        Titfuck_WAN14B_V1_Release.safetensors \
-        FILM_NOIR_EPOCH10.safetensors \
-        BouncyWalkV01.safetensors \
-        Spinning V2.safetensors \
-        squish_18.safetensors \
-        detailz-wan.safetensors \
-        studio_ghibli_wan14b_t2v_v01.safetensors \
-        Su_Bl_Ep02-Wan.safetensors \
-        wan_female_masturbation.safetensors \
-        Wan-Hip_Slammin_Assertive_Cowgirl.safetensors \
-        T2V - Skinny Petite Instagram Women - 14B.safetensors \
-        T2V-jiggle_tits-14b.safetensors" && \
-    for name in $FILES; do \
-        safe_name=$(echo "$name" | sed 's/ /%20/g'); \
-        wget -O "/models/loras/$name" "https://d1s3da0dcaf6kx.cloudfront.net/$safe_name"; \
+    for name in \
+        "wan-nsfw-e14-fixed.safetensors" \
+        "big_tits_epoch_50.safetensors" \
+        "pov_blowjob_v1.1.safetensors" \
+        "Wan_Breast_Helper_Hearmeman.safetensors" \
+        "wan_cowgirl_v1.3.safetensors" \
+        "cleavage_epoch_40.safetensors" \
+        "orgasm_e60.safetensors" \
+        "wan_missionary_side.safetensors" \
+        "dicks_epoch_100.safetensors" \
+        "masturbation_cumshot_wanI2V480p_v1.safetensors" \
+        "r0und4b0ut-wan-v1.0.safetensors" \
+        "facials_epoch_50.safetensors" \
+        "deepthroat_epoch_80.safetensors" \
+        "ahegao_v1_e35_wan.safetensors" \
+        "Wan_Pussy_LoRA_Hearmeman.safetensors" \
+        "doggyPOV_v1_1.safetensors" \
+        "wan_pov_missionary_v1.1.safetensors" \
+        "Titfuck_WAN14B_V1_Release.safetensors" \
+        "FILM_NOIR_EPOCH10.safetensors" \
+        "BouncyWalkV01.safetensors" \
+        "Spinning V2.safetensors" \
+        "squish_18.safetensors" \
+        "detailz-wan.safetensors" \
+        "studio_ghibli_wan14b_t2v_v01.safetensors" \
+        "Su_Bl_Ep02-Wan.safetensors" \
+        "wan_female_masturbation.safetensors" \
+        "Wan-Hip_Slammin_Assertive_Cowgirl.safetensors" \
+        "T2V - Skinny Petite Instagram Women - 14B.safetensors" \
+        "T2V-jiggle_tits-14b.safetensors"; \
+    do \
+        encoded=$(echo "$name" | sed 's/ /%20/g'); \
+        wget -O "/models/loras/$name" "https://d1s3da0dcaf6kx.cloudfront.net/$encoded"; \
     done
 
 
