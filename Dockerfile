@@ -26,10 +26,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN echo "torch==2.8.0.dev20250511+cu128" > /tmp/torch-constraint.txt && \
-    echo "torchaudio==2.6.0.dev20250511+cu128" >> /tmp/torch-constraint.txt && \
-    echo "torchsde==0.2.6" >> /tmp/torch-constraint.txt && \
-    echo "torchvision==0.22.0.dev20250511+cu128" >> /tmp/torch-constraint.txt
+RUN echo "torch==2.8.0.dev20250511+cu128" > /torch-constraint.txt && \
+    echo "torchaudio==2.6.0.dev20250511+cu128" >> /torch-constraint.txt && \
+    echo "torchsde==0.2.6" >> /torch-constraint.txt && \
+    echo "torchvision==0.22.0.dev20250511+cu128" >> /torch-constraint.txt
 
 # ------------------------------------------------------------
 # PyTorch (CUDA 12.8) & core tooling (no pip cache mounts)
@@ -86,8 +86,6 @@ RUN git clone https://github.com/Hearmeman24/upscalers.git /tmp/upscalers \
     && cp /tmp/upscalers/4xLSDIR.pth /4xLSDIR.pth \
     && rm -rf /tmp/upscalers
 
-RUN mkdir -p /models/loras
-
 COPY download_loras.sh /tmp/
 RUN chmod +x /tmp/download_loras.sh && /tmp/download_loras.sh
 
@@ -124,12 +122,6 @@ RUN pip install --no-cache-dir discord.py==2.5.2 \
                               Requests==2.32.3 \
                               websocket_client==1.8.0 \
                               "httpx[http2]"
-
-
-RUN mkdir -p /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film && \
-    wget -O /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film/film_net_fp32.pt \
-        https://d1s3da0dcaf6kx.cloudfront.net/film_net_fp32.pt
-
 
 # Entrypointtt
 COPY src/start_script.sh /start_script.sh
