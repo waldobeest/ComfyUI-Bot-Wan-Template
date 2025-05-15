@@ -58,7 +58,7 @@ RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/
 
 # Create LoRA directory and download LoRA files
 RUN mkdir -p /models/loras && \
-    for name in \
+    FILES="\
         wan-nsfw-e14-fixed.safetensors \
         big_tits_epoch_50.safetensors \
         pov_blowjob_v1.1.safetensors \
@@ -79,18 +79,20 @@ RUN mkdir -p /models/loras && \
         Titfuck_WAN14B_V1_Release.safetensors \
         FILM_NOIR_EPOCH10.safetensors \
         BouncyWalkV01.safetensors \
-        Spinning\ V2.safetensors \
+        Spinning V2.safetensors \
         squish_18.safetensors \
         detailz-wan.safetensors \
         studio_ghibli_wan14b_t2v_v01.safetensors \
         Su_Bl_Ep02-Wan.safetensors \
         wan_female_masturbation.safetensors \
         Wan-Hip_Slammin_Assertive_Cowgirl.safetensors \
-        T2V\ -\ Skinny\ Petite\ Instagram\ Women\ -\ 14B.safetensors \
-        T2V-jiggle_tits-14b.safetensors; \
-    do \
-      wget -O "/models/loras/$name" "https://d1s3da0dcaf6kx.cloudfront.net/${name// /%20}"; \
+        T2V - Skinny Petite Instagram Women - 14B.safetensors \
+        T2V-jiggle_tits-14b.safetensors" && \
+    for name in $FILES; do \
+        safe_name=$(echo "$name" | sed 's/ /%20/g'); \
+        wget -O "/models/loras/$name" "https://d1s3da0dcaf6kx.cloudfront.net/$safe_name"; \
     done
+
 
 # Download frame interpolation checkpoint
 RUN mkdir -p /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film && \
