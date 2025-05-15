@@ -48,7 +48,7 @@ RUN git clone --depth 1 https://github.com/comfyanonymous/ComfyUI.git /ComfyUI
 
 # 4) Install ComfyUI requirements using torch constraint file
 RUN cd /ComfyUI && \
-    pip install -r requirements.txt --constraint torch-constraint.txt
+    pip install -r requirements.txt --constraint /torch-constraint.txt
 
 # ------------------------------------------------------------
 # Final stage
