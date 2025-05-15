@@ -126,6 +126,8 @@ RUN pip install --no-cache-dir discord.py==2.5.2 \
                               websocket_client==1.8.0 \
                               "httpx[http2]"
 
+RUN mkdir -p /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film/
+
 RUN wget -O /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film/film_net_fp32.pt \
     https://d1s3da0dcaf6kx.cloudfront.net/film_net_fp32.pt
 
