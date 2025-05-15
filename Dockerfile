@@ -34,16 +34,21 @@ RUN pip install --upgrade pip && \
     pip install --pre torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/cu128 && \
     # Save exact installed torch versions
-    pip freeze | grep -E "^(torch|torchvision|torchaudio)" > /tmp/torch-constraint.txt && \
-    # Install core tooling
-    pip install packaging setuptools wheel pyyaml gdown triton runpod opencv-python
+    pip freeze | grep -E "^(torch|torchvision|torchaudio)" > /tmp/torch-constraint.txt
+
+# Copy the constraints file to a permanent location
+# This creates a new layer that will copy the file from the previous layer
+RUN cp /tmp/torch-constraint.txt /torch-constraint.txt
+
+# Install core tooling
+RUN pip install packaging setuptools wheel pyyaml gdown triton runpod opencv-python
 
 # 3) Clone ComfyUI
 RUN git clone --depth 1 https://github.com/comfyanonymous/ComfyUI.git /ComfyUI
 
 # 4) Install ComfyUI requirements using torch constraint file
 RUN cd /ComfyUI && \
-    pip install -r requirements.txt --constraint /tmp/torch-constraint.txt
+    pip install -r requirements.txt --constraint torch-constraint.txt
 
 # ------------------------------------------------------------
 # Final stage
@@ -110,10 +115,12 @@ RUN for repo in \
     fi; \
   done
 
+# Download frame interpolation checkpoint
 RUN mkdir -p /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film && \
     wget -O /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film/film_net_fp32.pt \
-        https://d1s3da0dcaf6kx.cloudfront.net/film_net_fp32.pt \
+    https://d1s3da0dcaf6kx.cloudfront.net/film_net_fp32.pt
 
+# Install sageattention package
 RUN pip install --no-cache-dir \
     https://raw.githubusercontent.com/Hearmeman24/upscalers/master/sageattention-2.1.1-cp312-cp312-linux_x86_64.whl
 
