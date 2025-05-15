@@ -57,41 +57,41 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/clip_vision
 
 # Create LoRA directory and download LoRA files
-RUN mkdir -p /models/loras && \
-    for name in \
-        "wan-nsfw-e14-fixed.safetensors" \
-        "big_tits_epoch_50.safetensors" \
-        "pov_blowjob_v1.1.safetensors" \
-        "Wan_Breast_Helper_Hearmeman.safetensors" \
-        "wan_cowgirl_v1.3.safetensors" \
-        "cleavage_epoch_40.safetensors" \
-        "orgasm_e60.safetensors" \
-        "wan_missionary_side.safetensors" \
-        "dicks_epoch_100.safetensors" \
-        "masturbation_cumshot_wanI2V480p_v1.safetensors" \
-        "r0und4b0ut-wan-v1.0.safetensors" \
-        "facials_epoch_50.safetensors" \
-        "deepthroat_epoch_80.safetensors" \
-        "ahegao_v1_e35_wan.safetensors" \
-        "Wan_Pussy_LoRA_Hearmeman.safetensors" \
-        "doggyPOV_v1_1.safetensors" \
-        "wan_pov_missionary_v1.1.safetensors" \
-        "Titfuck_WAN14B_V1_Release.safetensors" \
-        "FILM_NOIR_EPOCH10.safetensors" \
-        "BouncyWalkV01.safetensors" \
-        "Spinning V2.safetensors" \
-        "squish_18.safetensors" \
-        "detailz-wan.safetensors" \
-        "studio_ghibli_wan14b_t2v_v01.safetensors" \
-        "Su_Bl_Ep02-Wan.safetensors" \
-        "wan_female_masturbation.safetensors" \
-        "Wan-Hip_Slammin_Assertive_Cowgirl.safetensors" \
-        "T2V - Skinny Petite Instagram Women - 14B.safetensors" \
-        "T2V-jiggle_tits-14b.safetensors"; \
-    do \
-        encoded=$(echo "$name" | sed 's/ /%20/g'); \
-        wget -O "/models/loras/$name" "https://d1s3da0dcaf6kx.cloudfront.net/$encoded"; \
-    done
+# Create the directory for models
+RUN mkdir -p /models/loras
+
+# Download all files in a single layer to reduce image size
+RUN cd /models/loras && \
+    wget -O "wan-nsfw-e14-fixed.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/wan-nsfw-e14-fixed.safetensors" && \
+    wget -O "big_tits_epoch_50.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/big_tits_epoch_50.safetensors" && \
+    wget -O "pov_blowjob_v1.1.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/pov_blowjob_v1.1.safetensors" && \
+    wget -O "Wan_Breast_Helper_Hearmeman.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/Wan_Breast_Helper_Hearmeman.safetensors" && \
+    wget -O "wan_cowgirl_v1.3.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/wan_cowgirl_v1.3.safetensors" && \
+    wget -O "cleavage_epoch_40.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/cleavage_epoch_40.safetensors" && \
+    wget -O "orgasm_e60.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/orgasm_e60.safetensors" && \
+    wget -O "wan_missionary_side.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/wan_missionary_side.safetensors" && \
+    wget -O "dicks_epoch_100.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/dicks_epoch_100.safetensors" && \
+    wget -O "masturbation_cumshot_wanI2V480p_v1.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/masturbation_cumshot_wanI2V480p_v1.safetensors" && \
+    wget -O "r0und4b0ut-wan-v1.0.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/r0und4b0ut-wan-v1.0.safetensors" && \
+    wget -O "facials_epoch_50.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/facials_epoch_50.safetensors" && \
+    wget -O "deepthroat_epoch_80.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/deepthroat_epoch_80.safetensors" && \
+    wget -O "ahegao_v1_e35_wan.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/ahegao_v1_e35_wan.safetensors" && \
+    wget -O "Wan_Pussy_LoRA_Hearmeman.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/Wan_Pussy_LoRA_Hearmeman.safetensors" && \
+    wget -O "doggyPOV_v1_1.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/doggyPOV_v1_1.safetensors" && \
+    wget -O "wan_pov_missionary_v1.1.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/wan_pov_missionary_v1.1.safetensors" && \
+    wget -O "Titfuck_WAN14B_V1_Release.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/Titfuck_WAN14B_V1_Release.safetensors" && \
+    wget -O "FILM_NOIR_EPOCH10.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/FILM_NOIR_EPOCH10.safetensors" && \
+    wget -O "BouncyWalkV01.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/BouncyWalkV01.safetensors" && \
+    wget -O "Spinning%20V2.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/Spinning%20V2.safetensors" && \
+    wget -O "squish_18.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/squish_18.safetensors" && \
+    wget -O "detailz-wan.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/detailz-wan.safetensors" && \
+    wget -O "studio_ghibli_wan14b_t2v_v01.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/studio_ghibli_wan14b_t2v_v01.safetensors" && \
+    wget -O "Su_Bl_Ep02-Wan.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/Su_Bl_Ep02-Wan.safetensors" && \
+    wget -O "wan_female_masturbation.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/wan_female_masturbation.safetensors" && \
+    wget -O "Wan-Hip_Slammin_Assertive_Cowgirl.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/Wan-Hip_Slammin_Assertive_Cowgirl.safetensors" && \
+    wget -O "T2V%20-%20Skinny%20Petite%20Instagram%20Women%20-%2014B.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/T2V%20-%20Skinny%20Petite%20Instagram%20Women%20-%2014B.safetensors" && \
+    wget -O "T2V-jiggle_tits-14b.safetensors" "https://d1s3da0dcaf6kx.cloudfront.net/T2V-jiggle_tits-14b.safetensors"
+
 
 
 # Download frame interpolation checkpoint
