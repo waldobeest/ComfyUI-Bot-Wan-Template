@@ -54,7 +54,7 @@ RUN cd /ComfyUI && \
 FROM base AS final
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/clip_vision
+RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/clip_vision /models/loras
 
 # Split diffusion model downloads to avoid 50GB+ layers
 RUN wget -P /models/diffusion_models https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_480p_14B_bf16.safetensors
