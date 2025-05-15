@@ -54,7 +54,7 @@ RUN cd /ComfyUI && \
 FROM base AS final
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/clip_vision /models/loras
+RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/clip_vision
 
 # Split diffusion model downloads to avoid 50GB+ layers
 RUN wget -P /models/diffusion_models https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_480p_14B_bf16.safetensors
@@ -80,6 +80,8 @@ RUN pip install opencv-python
 RUN git clone https://github.com/Hearmeman24/upscalers.git /tmp/upscalers \
     && cp /tmp/upscalers/4xLSDIR.pth /4xLSDIR.pth \
     && rm -rf /tmp/upscalers
+
+RUN mkdir -p /models/loras
 
 COPY download_loras.sh /tmp/
 RUN chmod +x /tmp/download_loras.sh && /tmp/download_loras.sh
