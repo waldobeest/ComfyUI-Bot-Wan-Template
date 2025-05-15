@@ -56,6 +56,47 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 RUN mkdir -p /models/diffusion_models /models/text_encoders /models/vae /models/clip_vision
 
+# Create LoRA directory and download LoRA files
+RUN mkdir -p /models/loras && \
+    for name in \
+        wan-nsfw-e14-fixed.safetensors \
+        big_tits_epoch_50.safetensors \
+        pov_blowjob_v1.1.safetensors \
+        Wan_Breast_Helper_Hearmeman.safetensors \
+        wan_cowgirl_v1.3.safetensors \
+        cleavage_epoch_40.safetensors \
+        orgasm_e60.safetensors \
+        wan_missionary_side.safetensors \
+        dicks_epoch_100.safetensors \
+        masturbation_cumshot_wanI2V480p_v1.safetensors \
+        r0und4b0ut-wan-v1.0.safetensors \
+        facials_epoch_50.safetensors \
+        deepthroat_epoch_80.safetensors \
+        ahegao_v1_e35_wan.safetensors \
+        Wan_Pussy_LoRA_Hearmeman.safetensors \
+        doggyPOV_v1_1.safetensors \
+        wan_pov_missionary_v1.1.safetensors \
+        Titfuck_WAN14B_V1_Release.safetensors \
+        FILM_NOIR_EPOCH10.safetensors \
+        BouncyWalkV01.safetensors \
+        Spinning\ V2.safetensors \
+        squish_18.safetensors \
+        detailz-wan.safetensors \
+        studio_ghibli_wan14b_t2v_v01.safetensors \
+        Su_Bl_Ep02-Wan.safetensors \
+        wan_female_masturbation.safetensors \
+        Wan-Hip_Slammin_Assertive_Cowgirl.safetensors \
+        T2V\ -\ Skinny\ Petite\ Instagram\ Women\ -\ 14B.safetensors \
+        T2V-jiggle_tits-14b.safetensors; \
+    do \
+      wget -O "/models/loras/$name" "https://d1s3da0dcaf6kx.cloudfront.net/${name// /%20}"; \
+    done
+
+# Download frame interpolation checkpoint
+RUN mkdir -p /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film && \
+    wget -O /ComfyUI/custom_nodes/ComfyUI-Frame-Interpolation/ckpts/film/film_net_fp32.pt \
+        https://d1s3da0dcaf6kx.cloudfront.net/film_net_fp32.pt
+
 # Split diffusion model downloads to avoid 50GB+ layers
 RUN wget -P /models/diffusion_models https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_i2v_480p_14B_bf16.safetensors
 RUN wget -P /models/diffusion_models https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_t2v_14B_bf16.safetensors
@@ -73,6 +114,8 @@ RUN wget -P /models/vae https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repacka
 
 # Clip vision
 RUN wget -P /models/clip_vision https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors
+
+
 
 
 RUN pip install opencv-python
