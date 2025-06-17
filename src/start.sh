@@ -151,7 +151,7 @@ if [ -f "$FLAG_FILE" ] || [ "$new_config" = "true" ]; then
   echo "▶️  Starting ComfyUI"
   # group both the main and fallback commands so they share the same log
   mkdir -p "$NETWORK_VOLUME/${RUNPOD_POD_ID}"
-  nohup bash -c "python3 \"$NETWORK_VOLUME\"/ComfyUI/main.py --listen --use-sage-attention --extra-model-paths-config '/ComfyUI-Bot-Wan-Template/extra_model_paths.yaml' 2>&1 | tee \"$NETWORK_VOLUME\"/comfyui_\"$RUNPOD_POD_ID\"_nohup.log" &
+  nohup bash -c "python3 \"$NETWORK_VOLUME\"/ComfyUI/main.py --listen 0.0.0.0 --port 8188 --use-sage-attention --extra-model-paths-config '/ComfyUI-Bot-Wan-Template/extra_model_paths.yaml' 2>&1 | tee \"$NETWORK_VOLUME\"/comfyui_\"$RUNPOD_POD_ID\"_nohup.log" &
 
   until curl --silent --fail "$URL" --output /dev/null; do
       echo "🔄  Still waiting…"
@@ -376,7 +376,7 @@ if [ -n "$FILM_PID" ]; then
     echo "✅ film_net_fp32.pt download complete."
 fi
 mkdir -p "$NETWORK_VOLUME/${RUNPOD_POD_ID}"
-nohup bash -c "python3 \"$NETWORK_VOLUME\"/ComfyUI/main.py --listen 2>&1 | tee \"$NETWORK_VOLUME\"/comfyui_\"$RUNPOD_POD_ID\"_nohup.log" &
+nohup bash -c "python3 \"$NETWORK_VOLUME\"/ComfyUI/main.py --listen 0.0.0.0 --port 8188 2>&1 | tee \"$NETWORK_VOLUME\"/comfyui_\"$RUNPOD_POD_ID\"_nohup.log" &
 COMFY_PID=$!
 
 until curl --silent --fail "$URL" --output /dev/null; do
